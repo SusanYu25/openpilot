@@ -17,13 +17,11 @@ class CarState(CarStateBase):
 
     self.bluecruise_cluster_present = FordConfig.BLUECRUISE_CLUSTER_PRESENT # Sets the value of whether the car has the blue cruise cluster
     if CP.transmissionType == TransmissionType.automatic:
-      if CP.flags & FordFlags.CANFD:
-        self.shifter_values = can_define.dv["Gear_Shift_by_Wire_FD1"]["TrnRng_D_RqGsm"]
-      elif CP.flags & FordFlags.ALT_STEER_ANGLE:
-        self.shifter_values = can_define.dv["TransGearData"]["GearLvrPos_D_Actl"]
-      else:
-        self.shifter_values = can_define.dv["PowertrainData_10"]["TrnRng_D_Rq"]
-
+    if CP.flags & FordFlags.CANFD:
+     self.shifter_values = can_define.dv["Gear_Shift_by_Wire_FD1"]["TrnRng_D_RqGsm"]
+    elif CP.flags & FordFlags.ALT_STEER_ANGLE:
+     self.shifter_values = can_define.dv["TransGearData"]["GearLvrPos_D_Actl"]
+     
     self.cluster_min_speed = CV.KPH_TO_MS * 1.5
     self.cluster_speed_hyst_gap = CV.KPH_TO_MS / 2.
 
@@ -114,10 +112,8 @@ class CarState(CarStateBase):
       if self.CP.flags & FordFlags.CANFD:
         gear = self.shifter_values.get(cp.vl["Gear_Shift_by_Wire_FD1"]["TrnRng_D_RqGsm"])
       elif self.CP.flags & FordFlags.ALT_STEER_ANGLE:
-          gear = self.shifter_values.get(cp.vl["TransGearData"]["GearLvrPos_D_Actl"])
-      else:
-        gear = self.shifter_values.get(cp.vl["PowertrainData_10"]["TrnRng_D_Rq"])
-
+        gear = self.shifter_values.get(cp.vl["TransGearData"]["GearLvrPos_D_Actl"])
+      
       ret.gearShifter = self.parse_gear_shifter(gear)
     elif self.CP.transmissionType == TransmissionType.manual:
       ret.clutchPressed = cp.vl["Engine_Clutch_Data"]["CluPdlPos_Pc_Meas"] > 0
@@ -221,7 +217,6 @@ class CarState(CarStateBase):
     if CP.transmissionType == TransmissionType.automatic:
       messages += [
         ("Gear_Shift_by_Wire_FD1", 10),
-        ("PowertrainData_10",10)
       ]
     elif CP.transmissionType == TransmissionType.manual:
       messages += [
