@@ -58,11 +58,11 @@ STOP_DISTANCE = 5.0
 
 def get_jerk_factor(personality=custom.LongitudinalPersonalitySP.standard):
   if personality==custom.LongitudinalPersonalitySP.relaxed:
-    return 1.0
+    return 1.2
   elif personality==custom.LongitudinalPersonalitySP.standard:
     return 1.0
   elif personality==custom.LongitudinalPersonalitySP.moderate:
-    return 0.7
+    return 0.6
   elif personality==custom.LongitudinalPersonalitySP.aggressive:
     return 0.222
   else:
