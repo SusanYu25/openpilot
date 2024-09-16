@@ -1,4 +1,3 @@
-
 from cereal import car
 from opendbc.can.can_define import CANDefine
 from opendbc.can.parser import CANParser
@@ -110,9 +109,15 @@ class CarState(CarStateBase):
     if not self.CP.openpilotLongitudinalControl:
       ret.accFaulted = ret.accFaulted or cp_cam.vl["ACCDATA"]["CmbbDeny_B_Actl"] == 1
 
-     # gear
+    # gear
     if self.CP.transmissionType == TransmissionType.automatic:
-      gear = self.shifter_values.get(cp.vl["Gear_Shift_by_Wire_FD1"]["TrnRng_D_RqGsm"])
+      if self.CP.flags & FordFlags.CANFD:
+        gear = self.shifter_values.get(cp.vl["Gear_Shift_by_Wire_FD1"]["TrnRng_D_RqGsm"])
+      elif self.CP.flags & FordFlags.ALT_STEER_ANGLE:
+          gear = self.shifter_values.get(cp.vl["TransGearData"]["GearLvrPos_D_Actl"])
+      else:
+        gear = self.shifter_values.get(cp.vl["PowertrainData_10"]["TrnRng_D_Rq"])
+
       ret.gearShifter = self.parse_gear_shifter(gear)
     elif self.CP.transmissionType == TransmissionType.manual:
       ret.clutchPressed = cp.vl["Engine_Clutch_Data"]["CluPdlPos_Pc_Meas"] > 0
@@ -205,10 +210,9 @@ class CarState(CarStateBase):
       ]
       if CP.transmissionType == TransmissionType.automatic:
         messages += [
-         ("PowertrainData_10",10)
+          ("PowertrainData_10",10)
         ]
-
-     if CP.flags & FordFlags.CANFD:
+    if CP.flags & FordFlags.CANFD:
       messages += [
         ("Lane_Assist_Data3_FD1", 33),
         ("Cluster_Info_3_FD1", 10),
