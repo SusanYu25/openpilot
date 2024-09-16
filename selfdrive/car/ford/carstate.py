@@ -112,12 +112,12 @@ class CarState(CarStateBase):
 
     # gear
     if self.CP.transmissionType == TransmissionType.automatic:
-      if self.CP.flags & FordFlags.CANFD:
-        gear = self.shifter_values.get(cp.vl["Gear_Shift_by_Wire_FD1"]["TrnRng_D_RqGsm"])
-      elif self.CP.flags & FordFlags.ALT_STEER_ANGLE:
-          gear = self.shifter_values.get(cp.vl["TransGearData"]["GearLvrPos_D_Actl"])
-      else:
-        gear = self.shifter_values.get(cp.vl["PowertrainData_10"]["TrnRng_D_Rq"])
+    if self.CP.flags & FordFlags.CANFD:
+      gear = self.shifter_values.get(cp.vl["Gear_Shift_by_Wire_FD1"]["TrnRng_D_RqGsm"])
+    elif self.CP.flags & FordFlags.ALT_STEER_ANGLE:
+      gear = self.shifter_values.get(cp.vl["PowertrainData_10"]["TrnRng_D_Rq"])
+    else:
+      gear = self.shifter_values.get(cp.vl["TransGearData"]["GearLvrPos_D_Actl"])
 
       ret.gearShifter = self.parse_gear_shifter(gear)
     elif self.CP.transmissionType == TransmissionType.manual:
