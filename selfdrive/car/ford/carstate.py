@@ -199,7 +199,7 @@ class CarState(CarStateBase):
         ("ParkAid_Data", 50),
         ("TransGearData",10),
       ]
-     else:
+    else:
       messages += [
         ("SteeringPinion_Data", 100),
       ]
