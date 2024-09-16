@@ -203,10 +203,11 @@ class CarState(CarStateBase):
       messages += [
         ("SteeringPinion_Data", 100),
       ]
-       if CP.transmissionType == TransmissionType.automatic:
+      if CP.transmissionType == TransmissionType.automatic:
         messages += [
-        ("PowertrainData_10",10)
+         ("PowertrainData_10",10)
         ]
+
      if CP.flags & FordFlags.CANFD:
       messages += [
         ("Lane_Assist_Data3_FD1", 33),
