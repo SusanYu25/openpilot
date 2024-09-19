@@ -3,7 +3,7 @@ from opendbc.can.can_define import CANDefine
 from opendbc.can.parser import CANParser
 from openpilot.common.conversions import Conversions as CV
 from openpilot.selfdrive.car.ford.fordcan import CanBus
-from openpilot.selfdrive.car.ford.values import DBC, CarControllerParams, FordFlags, FordConfig, BUTTONS
+from openpilot.selfdrive.car.ford.values import DBC, CarControllerParams, FordFlags, FordConfig, BUTTONS_STATES
 from openpilot.selfdrive.car.interfaces import CarStateBase
 
 GearShifter = car.CarState.GearShifter
